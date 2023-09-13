@@ -3,26 +3,31 @@ import "./Shop.css";
 import { useEffect } from "react";
 import Product from "../Product/Product";
 import Cart from "../Cart/Cart";
-import { addToDb, getShopingCard } from "../../utility/fakedb";
+import { Link } from "react-router-dom";
+import {
+  addToDb,
+  deleteShopingCart,
+  getShopingCard,
+} from "../../utility/fakedb";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
-  const [addedProductsInCart, setAddedProductsInCart] = useState([]);
+  const [addedBooksInCart, setAddedBooksInCart] = useState([]);
 
   const handleClickToAdd = (product) => {
     let newCart = [];
 
-    const exists = addedProductsInCart.find((pd) => pd.id === product.id);
+    const exists = addedBooksInCart.find((pd) => pd.id === product.id);
     if (!exists) {
       product.quantity = 1;
-      newCart = [...addedProductsInCart, product];
+      newCart = [...addedBooksInCart, product];
     } else {
       product.quantity = product.quantity + 1;
       const exceptNewProduct = products.filter((pd) => pd.id !== product.id);
       newCart = [...exceptNewProduct, product];
     }
 
-    setAddedProductsInCart(newCart);
+    setAddedBooksInCart(newCart);
     addToDb(product.id);
 
     /*     const newCartWithNewProduct = [...addedProductsInCart, product];
@@ -30,6 +35,11 @@ const Shop = () => {
     console.log(product.id);
     addToDb(product.id);
     // console.log(newCartWithNewProduct); */
+  };
+
+  const handleClearCart = () => {
+    setAddedBooksInCart([]);
+    deleteShopingCart();
   };
 
   useEffect(() => {
@@ -52,7 +62,7 @@ const Shop = () => {
       }
       console.log(savedCart);
     }
-    setAddedProductsInCart(savedCart);
+    setAddedBooksInCart(savedCart);
   }, [products]);
   // }, [products, addedProductsInCart]);
 
@@ -68,7 +78,14 @@ const Shop = () => {
         ))}
       </div>
       <div className="cart-container">
-        <Cart addedProductsInCart={addedProductsInCart} />
+        <Cart
+          addedBooksInCart={addedBooksInCart}
+          handleClearCart={handleClearCart}
+        >
+          <Link style={{ textDecoration: "none" }} to="/orders">
+            <button className="shop-order-review-button">Review Orders</button>
+          </Link>
+        </Cart>
       </div>
     </div>
   );

@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Cart.css";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const Cart = (props) => {
-  const addedProductsInCart = props.addedProductsInCart;
+  const addedBooksInCart = props.addedBooksInCart;
+  const handleClearCart = props.handleClearCart;
 
   let total = 0;
   let totalDeliveryCharge = 0;
   let totalQuantity = 0;
-  for (const product of addedProductsInCart) {
+  for (const product of addedBooksInCart) {
     // product.quantity = product.quantity || 1;
     total += parseFloat(product.price * product.quantity);
     totalDeliveryCharge += parseFloat(product.delivery * product.quantity);
@@ -36,6 +39,11 @@ const Cart = (props) => {
         <h5>Grand-Total: </h5>
         <h5>$ {grandTotal.toFixed(2)}</h5>
       </span>
+      <button className="crear-car-button" onClick={handleClearCart}>
+        <span>Clear Cart </span>
+        <FontAwesomeIcon icon={faTrashCan} />
+      </button>
+      {props.children}
     </div>
   );
 };

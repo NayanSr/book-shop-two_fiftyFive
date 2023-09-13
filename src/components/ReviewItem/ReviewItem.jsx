@@ -4,7 +4,9 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const ReviewItem = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { img, title, price, quantity } = props.book;
+  const { img, title, price, quantity, id } = props.book;
+  // eslint-disable-next-line react/prop-types
+  const handleRemoveItem = props.handleRemoveItem;
   return (
     <div className="review-item">
       <img src={img} alt="" />
@@ -13,7 +15,7 @@ const ReviewItem = (props) => {
         <p>Price: {price}</p>
         <p>Quantity: {quantity}</p>
       </div>
-      <button className="delete-button">
+      <button onClick={() => handleRemoveItem(id)} className="delete-button">
         <FontAwesomeIcon className="delete-icon" icon={faTrashCan} />
       </button>
     </div>
